@@ -1,5 +1,6 @@
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, filters
-import cfg.config as cfg #importamos el archivo de configuracion, donde se encuentra el token del bot y los administradores del mismo
+from config_data import config #importamos el archivo de configuracion, donde se encuentra el token del bot y los administradores del mismo
+from core import commands #importamos los archivos de las funciones que se ejecutaran en el bot
 import warnings, logging
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -9,7 +10,15 @@ warnings.filterwarnings('ignore')
 
 if __name__ == '__main__':
 
-    application = ApplicationBuilder().token(cfg.TOKEN).build()   #creamos la aplicacion
+    application = ApplicationBuilder().token(config.TOKEN).build()
+
+    application.add_handler(CommandHandler('start', commands.start))
+
+    application.add_handler(CommandHandler('help', commands.help))
+
+    application.run_polling()   #iniciamos la aplicacion
+
+    # #creamos la aplicacion
 
     # jobqueue = application.job_queue
 
@@ -29,5 +38,3 @@ if __name__ == '__main__':
     # application.add_handler(MessageHandler(filters.TEXT, echo.echo))  #agregamos el manejador de mensajes de texto
 
     # jobqueue.run_repeating(Calend.gen_calend, interval=59)  # Intervalo de una semana (604800 segundos)
-
-    application.run_polling()   #iniciamos la aplicacion
