@@ -1,10 +1,13 @@
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, CallbackContext
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from config_data import config
 import traceback
 
 class Explorador:
+#region --------------- variables de clase ---------------
     PASO_1, PASO_2, PASO_2_1, PASO_2_2, PASO_2_3, PASO_2_4, PASO_2_5, PASO_2_6, PASO_3, PASO_3_1 = range(10)
-
+#endregion
+#region --------------- metodo init -------------------
     def __init__(self):
         self.chat_id = None
         self.message_thread_id = None
@@ -21,7 +24,8 @@ class Explorador:
         ]
         self.mensajes_explorador = []
         self.mensajes_no_borrados = []
-
+#endregion
+#region --------------- metodos auxiliares ------------
     async def borrado_mensaje(self, mensajes):
         try:
             for mensaje in mensajes:
@@ -54,7 +58,7 @@ class Explorador:
             return ConversationHandler.END
         except Exception as e:
             print(f'error en tiempo_espera_receta {e}')
-
+#endregion
     async def iniciar_explorador(self, update, context):
         try:
             self.user = update.message.from_user.username
