@@ -1,0 +1,7 @@
+import json
+
+# importamos le archivo de datos de configuracion
+with open('cfg/config_data.json') as f:
+    config_data = json.load(f)
+
+print(config_data)
