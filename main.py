@@ -4,10 +4,10 @@ from core import commands #importamos los archivos de las funciones que se ejecu
 from core.archive import Explorador
 import warnings, logging
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
+# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#                     level=logging.INFO)
 
-warnings.filterwarnings('ignore')
+# warnings.filterwarnings('ignore')
 
 if __name__ == '__main__':
 
