@@ -136,19 +136,28 @@ class Explorador:
 #endregion
     async def iniciar_explorador(self, update, context):
         try:
+            #compruebo si el usuario que ha iniciado la conversacion es un administrador o el grupo es el permitido
+            #si no es un administrador o el grupo no es el permitido, cierro la conversacion
             self.__init__()
             self.user = update.message.from_user.username
             self.chat_id = update.message.chat_id
             self.message_thread_id = update.message.message_thread_id
-            self.acceso_local()
-            opciones = []
-            for asignatura in self.explorar_directorio(self.local_path):
-                button = InlineKeyboardButton(asignatura, callback_data=asignatura.replace("📁 ", "").replace("📄 ", ""))
-                opciones.append([button])
-            opciones.append([InlineKeyboardButton("❌ Cerrar", callback_data="cerrar")])
-            reply_markup = InlineKeyboardMarkup(opciones)
-            self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text='Selecciona la asignatura:', reply_markup=reply_markup))
-            return self.PASO_1
+            if abs(self.chat_id) in config.chat_id:
+                self.acceso_local()
+                opciones = []
+                for asignatura in self.explorar_directorio(self.local_path):
+                    button = InlineKeyboardButton(asignatura, callback_data=asignatura.replace("📁 ", "").replace("📄 ", ""))
+                    opciones.append([button])
+                opciones.append([InlineKeyboardButton("❌ Cerrar", callback_data="cerrar")])
+                reply_markup = InlineKeyboardMarkup(opciones)
+                self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text='Selecciona la asignatura:', reply_markup=reply_markup))
+                return self.PASO_1
+            else:
+                print("Self.chat_id: ", abs(self.chat_id))
+                print("config.chat_id: ", config.chat_id)
+                await self.borrado_mensaje(self.mensajes_explorador)
+                self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, text=f"No tienes permisos para acceder a esta función."))
+                return ConversationHandler.END
         except Exception as e:
             print(f'error en iniciar_explorador {e}')
             traceback.print_exc()
@@ -257,14 +266,6 @@ class Explorador:
                     reply_markup = InlineKeyboardMarkup(opciones)
                     self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text='Selecciona una opción:', reply_markup=reply_markup))
                     return self.PASO_1
-                
-            # elif query.data == "crear_carpeta":
-            #     self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text='¿Cómo se llamará la carpeta?'))
-            #     return self.PASO_2
-            # else:
-            #     self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text=f"Opción no válida."))
-            #     self.cerrar_conversacion_explorador(context)
-            #     return ConversationHandler.END
         except Exception as e:
             print(f'error en manejador_explorador {e}')
             traceback.print_exc()

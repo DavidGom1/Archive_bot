@@ -1,4 +1,8 @@
 {
     "TOKEN" : "7896152031:AAGwWdxzIvuKN9BRxTP9Gzd81KD8syt6b0Q",
-    "local_path" : "/Documents/archivo_bot"
+    "local_path" : "./Documents/archivo_bot",
+    "chat_id_1" : 1002477347126,
+    "chat_id_2" : 1002273951466,
+    "chat_id_3" : 4634267374,
+    "chat_id_4" : 545562756
 }
