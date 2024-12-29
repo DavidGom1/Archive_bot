@@ -6,3 +6,4 @@ with open('config_data/config_data.json') as f:
     config_data = json.load(f)
 
 TOKEN = config_data['TOKEN']
+local_path = config_data['local_path']
