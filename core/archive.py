@@ -101,6 +101,7 @@ class Explorador:
                 else:
                     contenido.append(f"📄 {item}"
                     )
+            contenido.sort()
             return contenido
         except Exception as e:
             print(f'error en explorar_directorio {e}')
@@ -334,6 +335,11 @@ class Explorador:
                 #envio el archivo en el grupo
                 await self.borrado_mensaje(self.mensajes_explorador)
                 await context.bot.send_document(chat_id=self.chat_id, document=open(self.actual_path, 'rb'))
+                await self.funcion_retorno_contenido(context)
+                return self.PASO_1
+            elif query.data == "eliminar_confirmar":
+                os.remove(self.actual_path)
+                self.mensajes_explorador.append(await context.bot.send_message(chat_id=self.chat_id, message_thread_id = self.message_thread_id, text=f'Archivo eliminado.'))
                 await self.funcion_retorno_contenido(context)
                 return self.PASO_1
         except Exception as e:
